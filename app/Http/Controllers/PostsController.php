@@ -10,6 +10,11 @@ use App\Http\Requests\PostCreationRequest;
 
 class PostsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except('index', 'show');
+        // $this->middleware('auth')->only('create', 'store', 'edit', 'update', 'destroy');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +22,7 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $posts = Post::with('author', 'category', 'tags', 'comments')->latest()->get();
+        $posts = Post::with('author', 'category', 'tags', 'comments')->latest()->paginate(10);
 
         return view('posts.index')->withPosts($posts);
     }
@@ -70,7 +75,13 @@ class PostsController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        $this->authorize('update', $post);
+
+        $categories = Category::all();
+        $tags = Tag::all();
+
+        $post = $post->load('tags');
+        return view('posts.edit', compact('post', 'categories', 'tags'));
     }
 
     /**
@@ -82,7 +93,13 @@ class PostsController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $this->authorize('update', $post);
+
+        $post->update($request->only('title', 'body', 'category_id'));
+
+        $post->tags()->sync($request->get('tags'));
+
+        return redirect()->route('posts.index');
     }
 
     /**

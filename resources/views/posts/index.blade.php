@@ -8,6 +8,11 @@
                     <div>
                         <div>
                             <a href="{{ route('posts.show', $post) }}"><h2>{{ $post->title }}</h2></a>
+
+                            @can('update', $post)
+                                <span class="pull-right"><a href="{{ route('posts.edit', $post) }}"><i class="fa fa-edit"></i></a></span>
+                            @endcan
+
                         </div>
                         <div>
                             <small class="muted">{{ $post->created_at->format('d/m/Y H:i') }}</small>
@@ -33,5 +38,7 @@
                 <hr>
 
             @endforeach
+
+            {{ $posts->links() }}
 
 @endsection

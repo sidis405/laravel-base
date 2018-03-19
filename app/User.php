@@ -36,4 +36,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comment::class);
     }
+
+    public function addPostFrom($request)
+    {
+        return $this->posts()->create($request->only('title', 'body', 'category_id'));
+    }
 }

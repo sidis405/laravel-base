@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
+    protected $guarded = ['id'];
+
     public function author()
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -24,5 +26,11 @@ class Post extends Model
     public function comments()
     {
         return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    public function setTitleAttribute($value)
+    {
+        $this->attributes['title'] = $value;
+        $this->attributes['slug'] = str_slug($value);
     }
 }

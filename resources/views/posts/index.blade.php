@@ -1,16 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
+
             @foreach($posts as $post)
 
                 <article>
                     <div>
-                        <span class="pull-left">
+                        <div>
                             <a href="{{ route('posts.show', $post) }}"><h2>{{ $post->title }}</h2></a>
-                        </span>
+                        </div>
+                        <div>
+                            <small class="muted">{{ $post->created_at->format('d/m/Y H:i') }}</small>
+                        </div>
                     </div>
                     <div>
                         {{ $post->body }}
@@ -32,7 +33,5 @@
                 <hr>
 
             @endforeach
-        </div>
-    </div>
-</div>
+
 @endsection

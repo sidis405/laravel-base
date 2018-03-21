@@ -12,14 +12,13 @@
 
         </div>
         <div>
-            <small class="muted">{{ $post->created_at->format('d/m/Y H:i') }}</small>
+            <small class="muted">inviato da {{ $post->author->name }} il {{ $post->created_at->format('d/m/Y H:i') }}</small>
         </div>
     </div>
     <div>
         {{ $post->body }}
     </div>
     <div>
-        <small class="badge">{{ $post->author->name }}</small>
         <span class="badge">
             <a href="{{ route('categories.show', $post->category) }}">{{ $post->category->name }}</a>
         </small>

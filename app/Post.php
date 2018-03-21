@@ -28,9 +28,22 @@ class Post extends Model
         return $this->morphMany(Comment::class, 'commentable');
     }
 
-    public function setTitleAttribute($value)
+    public function setTitleAttribute($value) //modificatori // mutators - prima della scrittura
     {
         $this->attributes['title'] = $value;
         $this->attributes['slug'] = str_slug($value);
+    }
+
+    public function getImageAttribute($value)
+    {
+        if (!$value) {
+            return '/img/default.jpg';
+        }
+
+        if (strpos($value, 'http') !== false) {
+            return $value;
+        }
+
+        return '/' . $value;
     }
 }

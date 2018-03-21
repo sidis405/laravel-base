@@ -5,7 +5,7 @@
 <h3 class="page-title">Modifica Post</h3>
 <hr>
 
-<form action="{{ route('posts.update', $post) }}" method="POST">
+<form action="{{ route('posts.update', $post) }}" method="POST" enctype="multipart/form-data">
     @csrf
 
     @method('PATCH')
@@ -13,6 +13,11 @@
     <div class="form-group">
         <label>Titolo</label>
         <input class="form-control" name="title" placeholder="Inserisci un titolo" value="{{ old('title', $post->title) }}" />
+    </div>
+
+    <div class="form-group">
+        <label>Carica cover</label>
+        <input type="file" name="image" class="form-control">
     </div>
 
     <div class="form-group">

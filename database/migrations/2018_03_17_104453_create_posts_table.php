@@ -20,6 +20,8 @@ class CreatePostsTable extends Migration
             $table->text('body');
             $table->integer('user_id');
             $table->integer('category_id');
+            $table->string('image')->nullable();
+            $table->integer('published')->default(0);
             $table->timestamps();
         });
     }

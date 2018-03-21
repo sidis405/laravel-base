@@ -5,12 +5,17 @@
 <h3 class="page-title">Crea Un Nuovo Post</h3>
 <hr>
 
-<form action="{{ route('posts.store') }}" method="POST">
+<form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
 
     <div class="form-group">
         <label>Titolo</label>
         <input class="form-control" name="title" placeholder="Inserisci un titolo" value="{{ old('title') }}" />
+    </div>
+
+    <div class="form-group">
+        <label>Carica cover</label>
+        <input type="file" name="image" class="form-control">
     </div>
 
     <div class="form-group">

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Events\NewPost;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -39,6 +40,13 @@ class User extends Authenticatable
 
     public function addPostFrom($request)
     {
-        return $this->posts()->create($request->only('title', 'body', 'category_id'));
+        $input = $request->only('title', 'body', 'category_id');
+
+        if ($request->hasFile('image')) {
+            $input['image'] = $request->file('image')->store('covers');
+        }
+        $post = $this->posts()->create($input);
+        event(new NewPost($post));
+        return $post;
     }
 }

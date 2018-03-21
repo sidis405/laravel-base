@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    @include('posts._article')
+
+    <h2>Errore 500  </h2>
+
 @stop

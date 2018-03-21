@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use App\Tag;
 use App\Post;
 use App\Category;
-use Illuminate\Http\Request;
-use App\Http\Requests\PostCreationRequest;
+use App\Http\Requests\PostRequest;
 
 class PostsController extends Controller
 {
@@ -22,7 +21,8 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $posts = Post::with('author', 'category', 'tags', 'comments')->latest()->paginate(10);
+        $posts = Post::with('author', 'category', 'tags', 'comments')
+            ->where('published', 1)->latest()->paginate(10);
 
         return view('posts.index')->withPosts($posts);
     }
@@ -46,7 +46,7 @@ class PostsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(PostCreationRequest $request)
+    public function store(PostRequest $request)
     {
         $post = auth()->user()->addPostFrom($request);
 
@@ -91,11 +91,17 @@ class PostsController extends Controller
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(PostRequest $request, Post $post)
     {
         $this->authorize('update', $post);
 
-        $post->update($request->only('title', 'body', 'category_id'));
+        $input = $request->only('title', 'body', 'category_id');
+
+        if ($request->hasFile('image')) {
+            $input['image'] = $request->file('image')->store('covers');
+        }
+
+        $post->update($input);
 
         $post->tags()->sync($request->get('tags'));
 

@@ -20,6 +20,7 @@ class BlogSeeder extends Seeder
         User::create([
             'name' => 'Sid',
             'email' => 'forge405@gmail.com',
+            'role' => 'admin',
             'password' => Hash::make('sapiens')
         ]);
 

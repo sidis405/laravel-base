@@ -1,6 +1,8 @@
 <?php
 
 Route::view('/', 'welcome');
+Route::get('dashboard', 'DashboardController@index');
+Route::patch('dashboard/update/{post}', 'DashboardController@status')->name('posts.status');
 
 Route::resource('posts', 'PostsController');
 Route::resource('comments', 'CommentsController')->only('store', 'update', 'destroy');
